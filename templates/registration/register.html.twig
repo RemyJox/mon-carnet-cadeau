@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription
+{% endblock %}
+
+{% block body %}
+	{% for flash_error in app.flashes('verify_email_error') %}
+		<div class="notification is-danger is-light">{{ flash_error }}</div>
+	{% endfor %}
+
+	<div class="columns is-centered">
+		<div class="column is-half p-5">
+			<h1 class="title has-text-centered">Inscription</h1>
+
+			{% if not registrationForm.vars.valid %}
+
+				{{ form_errors(registrationForm) }}
+
+			{% endif %}
+
+			{{ form_start(registrationForm) }}
+			<div class="field">
+				{{ form_label(registrationForm.user_name, null, {'label_attr': {'class': 'label'}}) }}
+				<div class="control has-icons-left">
+					{{ form_widget(registrationForm.user_name, {
+                            'attr': {
+                                'class': 'input ' ~ (form_errors(registrationForm.user_name) ? 'is-danger' : '')
+                            }
+                        }) }}
+					<span class="icon is-small is-left">
+						<i class="fas fa-user"></i>
+					</span>
+				</div>
+				{{ form_errors(registrationForm.user_name) }}
+				{{ form_help(registrationForm.user_name) }}
+			</div>
+
+			<div class="field">
+				{{ form_label(registrationForm.email, null, {'label_attr': {'class': 'label'}}) }}
+				<div class="control has-icons-left">
+					{{ form_widget(registrationForm.email, {
+                            'attr': {
+                                'class': 'input ' ~ (form_errors(registrationForm.email) ? 'is-danger' : '')
+                            }
+                        }) }}
+					<span class="icon is-small is-left">
+						<i class="fas fa-envelope"></i>
+					</span>
+				</div>
+				{{ form_errors(registrationForm.email) }}
+				{{ form_help(registrationForm.email) }}
+			</div>
+
+
+			<div class="field">
+				{{ form_label(registrationForm.plainPassword, null, {'label_attr': {'class': 'label'}}) }}
+				<div class="control has-icons-left">
+					{{ form_widget(registrationForm.plainPassword, {
+                            'attr': {
+                                'class': 'input ' ~ (form_errors(registrationForm.plainPassword) ? 'is-danger' : '')
+                            }
+                        }) }}
+					<span class="icon is-small is-left">
+						<i class="fas fa-lock"></i>
+					</span>
+				</div>
+				{{ form_errors(registrationForm.plainPassword) }}
+				{{ form_help(registrationForm.plainPassword) }}
+			</div>
+
+
+			<div class="field">
+				<div class="control">
+					<label class="checkbox">
+						{{ form_widget(registrationForm.agreeTerms) }}
+					</label>
+				</div>
+				{{ form_errors(registrationForm.agreeTerms) }}
+			</div>
+			<div class="field is-grouped">
+				<div class="control">
+					<button type="submit" class="button is-primary is-fullwidth">S'inscrire</button>
+				</div>
+
+				<div class="control">
+					<a href="{{path('app_login')}}" class="button is-primary is-fullwidth">
+					<i class="fas fa-sign-in-alt"></i>
+					<span> Connexion</span>
+					</a>
+					
+				</div>
+			</div>
+			{{ form_row(registrationForm._token) }}
+			{{ form_end(registrationForm) }}
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<style>
+    .toggle-password {
+        pointer-events: auto !important;
+        z-index: 10;
+        cursor: pointer;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+    <form method="post">
+        {% if error %}
+            <div class="notification is-danger is-light">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+
+        <div class="columns is-centered">
+            <div class="column is-half p-6 mt-6-desktop">
+                <h1 class="title has-text-centered">Connexion</h1>
+
+                <div class="field">
+                    <label class="label" for="username">Email</label>
+                    <div class="control has-icons-left">
+                        <input type="email" name="_username" id="username" class="input" value="{{ last_username }}" placeholder="Exemple@exemple.fr" autocomplete="email" required autofocus>
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label" for="password">Mot de passe</label>
+                    <div class="control has-icons-left has-icons-right">
+                        <input type="password" name="_password" id="password" class="input" autocomplete="current-password" placeholder="Votre mot de passe" required>
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-lock"></i>
+                        </span>
+                        <span class="icon is-small is-right toggle-password">
+                            <i class="fas fa-eye"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button class="button is-primary is-fullwidth-mobile is-medium-tablet" type="submit">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Connexion</span>
+                        </button>
+                    </div>
+                    <div class="control">
+                        <a href="{{ path('app_forgot_password_request') }}" class="button is-fullwidth-mobile is-small-tablet">Mot de passe oublié ?</a>
+                    </div>
+                    <div class="control">
+                        <a href="{{ path('app_register') }}" class="button is-primary is-fullwidth-mobile is-medium-tablet">Pas encore inscrit ?</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.toggle-password').forEach(icon => {
+        icon.addEventListener('click', (e) => {
+            e.preventDefault();
+            const passwordInput = icon.closest('.control').querySelector('input[type="password"], input[type="text"]');
+            const iconEye = icon.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                iconEye.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                iconEye.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

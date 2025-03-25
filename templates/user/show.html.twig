@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon compte{% endblock %}
+
+{% block body %}
+    <h1>User</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Email</th>
+                <th>Nom d'utilisateur</th>
+                <th>création du compte</th>
+                <th>Derniere mise a jour du compte</th>
+            </tr>
+            <tr>
+                <td>{{ user.email }}</td>
+                <td>{{ user.userName }}</td>
+                <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ user.updateAt ? user.updateAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+           
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
+
+{% endblock %}

@@ -1,0 +1,41 @@
+<nav class="navbar" role="navigation" aria-label="main navigation">
+	<div class="navbar-brand">
+		{% if app.user %}
+			<div class="navbar">
+				<div class="navbar-item has-dropdown is-hoverable is-desktop">
+					<a class="navbar-link">
+						Profil
+					</a>
+
+					<div class="navbar-dropdown ">
+						<a class="navbar-item" href="{{path('app_user_show',{id : app.user.id})}}">
+							Mon compte
+						</a>
+						<a class="navbar-item" href="{{path('app_logout')}}">
+							déconnexion
+						</a>
+					</div>
+				</div>
+					<a class="navbar-item" href="{{path('app_home')}}">
+						home
+					</a>
+					<a class="navbar-item" href="{{path('app_event_index')}}">
+						Mes listes
+					</a>
+			</div>
+		{% else %}
+
+			<div class="navbar-start">
+				<div class="navbar-item">
+					<div class="buttons">
+						<a class="button is-primary" href="{{path('app_register')}}">
+							<strong>Inscription</strong>
+						</a>
+						<a class="button is-light" href="{{path('app_login')}}">
+							Connexion
+						</a>
+					</div>
+				</div>
+			</div>
+		{% endif %}
+	</nav>

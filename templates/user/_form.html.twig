@@ -1,0 +1,130 @@
+
+
+        
+{% block body %}
+<section class="section">
+    <div class="container">
+        
+        {% for message in app.flashes('success') %}
+            <div class="notification is-success">
+                <button class="delete"></button>
+                {{ message }}
+            </div>
+        {% endfor %}
+        
+        {% for message in app.flashes('error') %}
+            <div class="notification is-danger">
+                <button class="delete"></button>
+                {{ message }}
+            </div>
+        {% endfor %}
+        
+        <div class="columns">
+            
+            <div class="column is-half">
+                <div class="box">
+                    <h2 class="title is-4">Informations du profil</h2>
+                    
+                    {{ form_start(form) }}
+                        <div class="field">
+                            {{ form_label(form.user_name, null, {'label_attr': {'class': 'label'}}) }}
+                            <div class="control">
+                                {{ form_widget(form.user_name, {'attr': {'class': 'input'}}) }}
+                            </div>
+                            {{ form_errors(form.user_name) }}
+                        </div>
+                        
+                        <div class="field">
+                            {{ form_label(form.email, null, {'label_attr': {'class': 'label'}}) }}
+                            <div class="control">
+                                {{ form_widget(form.email, {'attr': {'class': 'input'}}) }}
+                            </div>
+                            {{ form_errors(form.email) }}
+                        </div>
+                        
+                        <div class="field">
+                            <div class="control">
+                                <button type="submit" class="button is-primary">
+                                    {{ button_label|default('Enregistrer') }}
+                                </button>
+                            </div>
+                        </div>
+                    {{ form_end(form, {render_rest: false}) }}
+                </div>
+            </div>
+            
+            
+            <div class="column is-half">
+                <div class="box">
+                    <h2 class="title is-4">Changer de mot de passe</h2>
+                    
+                    {{ form_start(passwordForm) }}
+                        <div class="field">
+                            {{ form_label(passwordForm.oldPassword) }}
+                            <div class="control has-icons-right">
+                                {{ form_widget(passwordForm.oldPassword) }}
+                                <span class="icon is-small is-right toggle-password-icon">
+                                    
+                                </span>
+                            </div>
+                            {{ form_errors(passwordForm.oldPassword) }}
+                        </div>
+                        
+                        <div class="field">
+                            {{ form_label(passwordForm.newPassword.first) }}
+                            <div class="control has-icons-right">
+                                {{ form_widget(passwordForm.newPassword.first) }}
+                                <span class="icon is-small is-right toggle-password-icon">
+                                   
+                                </span>
+                            </div>
+                            {{ form_errors(passwordForm.newPassword.first) }}
+                            {% if passwordForm.newPassword.first.vars.help is defined %}
+                                <p class="help">{{ passwordForm.newPassword.first.vars.help }}</p>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="field">
+                            {{ form_label(passwordForm.newPassword.second) }}
+                            <div class="control has-icons-right">
+                                {{ form_widget(passwordForm.newPassword.second) }}
+                                <span class="icon is-small is-right toggle-password-icon">
+                                    
+                                </span>
+                            </div>
+                            {{ form_errors(passwordForm.newPassword.second) }}
+                        </div>
+                        
+                        <div class="field">
+                            <div class="control">
+                                <button type="submit" class="button is-warning">
+                                    Modifier le mot de passe
+                                </button>
+                            </div>
+                        </div>
+                    {{ form_end(passwordForm, {render_rest: false}) }}
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-5">
+            <a href="{{ path('app_user_show', {'id': user.id}) }}" class="button is-link is-light">
+                Retour au profil
+            </a>
+        </div>
+    </div>
+</section>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        
+        (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+            const $notification = $delete.parentNode;
+            $delete.addEventListener('click', () => {
+                $notification.parentNode.removeChild($notification);
+            });
+        });
+    });
+</script>
+{% endblock %}
