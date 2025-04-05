@@ -2,9 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\EventRepository;
+use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\EventRepository;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 class Event
@@ -27,10 +30,29 @@ class Event
     private ?\DateTimeInterface $updated_at = null;
 
     #[ORM\ManyToOne(inversedBy: 'events')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'events')]
-    private ?Theme $themes = null;
+    private ?Theme $theme = null;
+
+    /**
+     * @var Collection<int, Member>
+     */
+    #[ORM\OneToMany(targetEntity: Member::class, mappedBy: 'event')]
+    private Collection $members;
+
+    #[ORM\OneToOne(mappedBy: 'event', cascade: ['persist', 'remove'])]
+    private ?Gift $gift = null;
+
+    public function __construct()
+    {
+        $this->created_at = new \DateTimeImmutable();
+        $this->updated_at = new \DateTime();
+        $this->status = 'actif';
+        $this->members = new ArrayCollection();
+    }
+    
 
     public function getId(): ?int
     {
@@ -97,14 +119,66 @@ class Event
         return $this;
     }
 
-    public function getThemes(): ?Theme
+    public function getTheme(): ?Theme
     {
-        return $this->themes;
+        return $this->theme;
     }
 
-    public function setThemes(?Theme $themes): static
+    public function setTheme(?Theme $theme): static
     {
-        $this->themes = $themes;
+        $this->theme = $theme;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Member>
+     */
+    public function getMembers(): Collection
+    {
+        return $this->members;
+    }
+
+    public function addMember(Member $member): static
+    {
+        if (!$this->members->contains($member)) {
+            $this->members->add($member);
+            $member->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMember(Member $member): static
+    {
+        if ($this->members->removeElement($member)) {
+            // set the owning side to null (unless already changed)
+            if ($member->getEvent() === $this) {
+                $member->setEvent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getGift(): ?Gift
+    {
+        return $this->gift;
+    }
+
+    public function setGift(?Gift $gift): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($gift === null && $this->gift !== null) {
+            $this->gift->setEvent(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($gift !== null && $gift->getEvent() !== $this) {
+            $gift->setEvent($this);
+        }
+
+        $this->gift = $gift;
 
         return $this;
     }

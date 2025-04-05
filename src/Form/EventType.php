@@ -28,10 +28,10 @@ class EventType extends AbstractType
                 ]
             ])
            
-            ->add('themes', EntityType::class, [
+            ->add('theme', EntityType::class, [
                 'class' => Theme::class,
                 'choice_label' => 'name',
-                'label' => 'Thèmes',
+                'label' => 'Thème',
                 'placeholder' => 'Choisir un thème',
                 'required' => false,
                 'constraints' => [

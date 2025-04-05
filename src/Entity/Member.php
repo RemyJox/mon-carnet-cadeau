@@ -27,6 +27,9 @@ class Member
     #[ORM\ManyToOne(inversedBy: 'members')]
     private ?User $user = null;
 
+    #[ORM\ManyToOne(inversedBy: 'members')]
+    private ?Event $event = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -76,6 +79,18 @@ class Member
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getEvent(): ?Event
+    {
+        return $this->event;
+    }
+
+    public function setEvent(?Event $event): static
+    {
+        $this->event = $event;
 
         return $this;
     }

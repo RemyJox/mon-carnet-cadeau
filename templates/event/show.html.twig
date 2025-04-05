@@ -20,10 +20,10 @@
         <tbody>
             {% for event in events %}
                 <tr>
-                    <td>{{ event.id }}</td>
                     <td>{{ event.title }}</td>
+                    <td>{{ event.id }}</td>
                     <td>{{ event.status }}</td>
-                    <td>{{ event.creePar.username }}</td> {# Supposons que creePar est une relation vers User #}
+                    <td>{{ event.username }}</td>
                     <td>{{ event.createdAt|date('Y-m-d H:i:s') }}</td>
                     <td>{{ event.updatedAt|date('Y-m-d H:i:s') }}</td>
                     <td>
