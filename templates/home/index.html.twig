@@ -3,18 +3,19 @@
 {% block title %}Mon carnet cadeau
 {% endblock %}
 
-{% block h1 %}Bienvenue sur Mon carnet cadeau !
-{% endblock %}
 {% block body %}
+	<h1 class="has-text-centered is-size-3 has-text-weight-bold has-text-white">Bienvenue sur Mon carnet cadeau !
+	</h1>
 
-	<h2>Toute vos listes de cadeaux pour caque évenement.</h2>
+	<h2 class="has-text-centered is-size-5 has-text-weight-bold has-text-white">Toute vos listes de cadeaux pour caque évenement.</h2>
 
-	<p>Faite votre prémiere liste en cliquant
-		<a href="{{path('app_register')}}">ici</a>
+	<p>Créer votre premier évenement en cliquant
+		{% if app.user %}
+			<a href="{{path('app_event_new')}}">ici</a>
+			{% else %}
+			<a href="{{path('app_register')}}">ici</a>
+				
+		{% endif %}
+
 	</p>
-	{% if app.user %}
-
-		<a href="{{path('app_logout')}}">déconnexion</a>
-	{% endif %}
-    <a href="{{path('app_login')}}">connexion</a>
 {% endblock %}

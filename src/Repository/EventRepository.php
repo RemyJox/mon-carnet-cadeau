@@ -40,4 +40,15 @@ class EventRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function findEventsByUser(int $userId): array
+    {
+        return $this->createQueryBuilder('e')
+        ->where('e.user = :userId')
+        ->setParameter('userId', $userId)
+        ->orderBy('e.created_at', 'DESC')
+        ->getQuery()
+        ->getResult();
+
+    }
 }

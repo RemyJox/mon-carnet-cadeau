@@ -9,35 +9,37 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Required;
 
 class EventType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title')
-            ->add('status')
-            ->add('created_at', null, [
-                'widget' => 'single_text',
+            ->add('title', null, [
+                'label' => 'Titre',
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Noel des enfants 2025', // Correction ici
+                    'class' => 'form-control' // Optionnel
+                ],
+                'constraints' => [
+                    new NotBlank(['message' => 'Veuillez saisir un titre'])
+                ]
             ])
-            ->add('updated_at', null, [
-                'widget' => 'single_text',
-            ])
-
+           
             ->add('theme', EntityType::class, [
                 'class' => Theme::class,
                 'choice_label' => 'name',
-                'label' => 'Theme*',
-                'placeholder' => 'Saisir une un theme',
+                'label' => 'Thème',
+                'placeholder' => 'Choisir un thème',
                 'required' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Veuillez saisir une theme'
+                        'message' => 'Veuillez sélectionner au moins un thème'
                     ])
                 ]
-            ])
-            
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

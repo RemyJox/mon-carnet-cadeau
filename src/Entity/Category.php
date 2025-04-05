@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\ThemeRepository;
+use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ThemeRepository::class)]
-class Theme
+#[ORM\Entity(repositoryClass: CategoryRepository::class)]
+class Category
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -19,14 +19,14 @@ class Theme
     private ?string $name = null;
 
     /**
-     * @var Collection<int, Event>
+     * @var Collection<int, Gift>
      */
-    #[ORM\OneToMany(targetEntity: Event::class, mappedBy: 'themes')]
-    private Collection $events;
+    #[ORM\OneToMany(targetEntity: Gift::class, mappedBy: 'category')]
+    private Collection $gifts;
 
     public function __construct()
     {
-        $this->events = new ArrayCollection();
+        $this->gifts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -47,29 +47,29 @@ class Theme
     }
 
     /**
-     * @return Collection<int, Event>
+     * @return Collection<int, Gift>
      */
-    public function getEvents(): Collection
+    public function getGifts(): Collection
     {
-        return $this->events;
+        return $this->gifts;
     }
 
-    public function addEvent(Event $event): static
+    public function addGift(Gift $gift): static
     {
-        if (!$this->events->contains($event)) {
-            $this->events->add($event);
-            $event->setTheme($this);
+        if (!$this->gifts->contains($gift)) {
+            $this->gifts->add($gift);
+            $gift->setCategory($this);
         }
 
         return $this;
     }
 
-    public function removeEvent(Event $event): static
+    public function removeGift(Gift $gift): static
     {
-        if ($this->events->removeElement($event)) {
+        if ($this->gifts->removeElement($gift)) {
             // set the owning side to null (unless already changed)
-            if ($event->getTheme() === $this) {
-                $event->setTheme(null);
+            if ($gift->getCategory() === $this) {
+                $gift->setCategory(null);
             }
         }
 

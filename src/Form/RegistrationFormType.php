@@ -61,16 +61,18 @@ class RegistrationFormType extends AbstractType
                         'message' => 'Vous devez accepter nos conditions.',
                     ]),
                 ],
-                "toggle" => true,
             ])
             ->add('plainPassword', PasswordType::class, [
                 'mapped' => false,
-                // 'toggle' => true,
+                'toggle' => true,
                 "required" => false,
                 'label' => 'Mot de passe',
                 'attr' => [
+                    'class' => 'password-toggle',
+                    'data-password-toggle' => true,
                     'autocomplete' => 'new-password',
                     "placeholder" => "Votre mot de passe"
+                    
                 ],
                 'constraints' => [
                     new Regex([
@@ -82,9 +84,9 @@ class RegistrationFormType extends AbstractType
                     ]),
                     new Length([
                         'min' => 12,
-                        'minMessage' => 'le nombre minimal de caractère est de{{ limit }}',
-                        'maxMessage' => 'le nombre maximal de caractère est de{{ limit }}',
+                        'minMessage' => 'Le nombre minimal de caractères est de {{ limit }}',
                         'max' => 4096,
+                        'maxMessage' => 'Le nombre maximal de caractères est de {{ limit }}'
                     ]),
                 ],
             ])
